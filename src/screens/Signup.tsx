@@ -50,21 +50,18 @@ const Signup: React.FC<Props> = ({ navigation }) => {
 
   const handleSignup = async () => {
     setError('');
-
     if (!name || !email || !password) {
       return setError('All fields are required');
     }
-
     if (!isValidEmail(email)) {
       return setError('Invalid email format');
     }
-
     if (password.length < 6) {
       return setError('Password must be at least 6 characters');
     }
-
     try {
-      await signup(name, email, password);
+      await signup(form.name, form.email, form.password);
+      navigation.replace('Login');
     } catch (err: any) {
       setError(err?.message || 'Something went wrong');
     }

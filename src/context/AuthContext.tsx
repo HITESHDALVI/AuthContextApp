@@ -59,7 +59,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   ): Promise<void> => {
     const newUser: User = { name, email, password };
     await AsyncStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
   };
 
   const logout = async (): Promise<void> => {
