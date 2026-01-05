@@ -5,6 +5,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  loggedIn: Boolean;
 };
 
 type AuthContextType = {
@@ -25,31 +26,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     loadUser();
   }, []);
+
   const loadUser = async (): Promise<void> => {
-    try {
-      const storedUser = await AsyncStorage.getItem('user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser) as User);
+    const storedUser = await AsyncStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser) as User;
+      if (parsedUser.loggedIn) {
+        setUser(parsedUser);
       }
-    } catch (error) {
-      console.error('Failed to load user', error);
     }
   };
 
   const login = async (email: string, password: string): Promise<void> => {
     const storedUser = await AsyncStorage.getItem('user');
-
-    if (!storedUser) {
-      throw new Error('User not found');
-    }
-
+    if (!storedUser) throw new Error('User not found');
     const parsedUser = JSON.parse(storedUser) as User;
-
     if (parsedUser.email !== email || parsedUser.password !== password) {
       throw new Error('Invalid credentials');
     }
-
-    setUser(parsedUser);
+    const updatedUser: User = {
+      ...parsedUser,
+      loggedIn: true,
+    };
+    await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
   };
 
   const signup = async (
@@ -57,11 +57,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
   ): Promise<void> => {
-    const newUser: User = { name, email, password };
+    const newUser: User = {
+      name,
+      email,
+      password,
+      loggedIn: false,
+    };
     await AsyncStorage.setItem('user', JSON.stringify(newUser));
   };
-
   const logout = async (): Promise<void> => {
+    const storedUser = await AsyncStorage.getItem('user');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser) as User;
+      const updatedUser = { ...parsedUser, loggedIn: false };
+      await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+    }
     setUser(null);
   };
 

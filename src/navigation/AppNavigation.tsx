@@ -32,7 +32,7 @@ const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
-        {user ? (
+        {user?.loggedIn ? (
           <Stack.Screen name="Home" component={Home} />
         ) : (
           <>
