@@ -14,6 +14,11 @@ Screen navigation using React Navigation
 Persistent login using AsyncStorage
 Clean, reusable UI & code structure
 
+Demo Video
+
+🎥 A demo video showcasing the app flow is available at:
+src/demo/simulation_recording.mp4
+
 Tech Stack
 
 React Native
@@ -41,6 +46,8 @@ src/
 │ └── homeStyles.ts
 ├── utils/
 │ └── validation.ts
+├── demo/
+│ └── demo.mp4
 └── types/
 └── images.d.ts
 
