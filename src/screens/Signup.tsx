@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Lucide from '@react-native-vector-icons/lucide';
-
 import { AuthContext } from '../context/AuthContext';
 import { isValidEmail } from '../utils/validation';
 import { loginStyles } from '../styles/loginStyles';

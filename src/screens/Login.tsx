@@ -51,11 +51,12 @@ const Login: React.FC<Props> = ({ navigation }) => {
 
   const handleLogin = async (): Promise<void> => {
     setError('');
-
+    if (!form.email || !form.password) {
+      return setError('Please enter user credentials');
+    }
     if (!isValidEmail(form.email)) {
       return setError('Invalid email format');
     }
-
     try {
       await login(form.email, form.password);
     } catch (err) {
@@ -65,7 +66,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={loginStyles.container}>
-      {/* Header */}
       <View style={loginStyles.header}>
         <View style={loginStyles.iconWrapper}>
           <Lucide name="fingerprint" size={60} color="#4F46E5" />
@@ -73,8 +73,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
         <Text style={loginStyles.heading}>Login</Text>
         <Text style={loginStyles.subText}>Enter your credentials</Text>
       </View>
-
-      {/* Email */}
       <View style={loginStyles.inputWrapper}>
         <TextInput
           placeholder="Email"
@@ -86,7 +84,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
           onChangeText={text => handleChange('email', text)}
         />
       </View>
-
       <View style={loginStyles.inputWrapper}>
         <TextInput
           placeholder="Password"
@@ -96,7 +93,6 @@ const Login: React.FC<Props> = ({ navigation }) => {
           value={form.password}
           onChangeText={text => handleChange('password', text)}
         />
-
         <TouchableOpacity
           onPress={() => handleChange('showPassword', !form.showPassword)}
           style={loginStyles.eyeButton}
@@ -108,13 +104,10 @@ const Login: React.FC<Props> = ({ navigation }) => {
           />
         </TouchableOpacity>
       </View>
-
       {error ? <Text style={loginStyles.error}>{error}</Text> : null}
-
       <TouchableOpacity style={loginStyles.button} onPress={handleLogin}>
         <Text style={loginStyles.buttonText}>Continue</Text>
       </TouchableOpacity>
-
       <TouchableOpacity
         style={loginStyles.footer}
         onPress={() => navigation.navigate('Signup')}

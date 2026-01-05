@@ -4,7 +4,8 @@ export const homeStyles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: '#F9FAFB',
-    padding: 24,
+    paddingHorizontal: '4%',
+    paddingVertical: '4%',
     alignItems: 'center',
   },
 
